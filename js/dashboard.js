@@ -1,5 +1,5 @@
 // js/dashboard.js
-// Handles: get tasks, display tasks, add/edit/complete/restore/delete task (coming soon), logout.
+// Handles: get tasks, display tasks, add/edit/complete/restore task, delete task (coming soon), logout.
 
 $(document).ready(function () {
 
@@ -176,12 +176,48 @@ $(document).ready(function () {
       : $("<button class='complete-btn'>Complete</button>");
     const $deleteBtn = $("<button class='delete-btn'>Delete</button>");
 
-    // Complete/Restore and Delete handlers will be wired up in upcoming steps.
+    // Delete handler will be wired up in an upcoming step.
 
     $actions.append($editBtn, $statusBtn, $deleteBtn);
     $card.append($name, $desc, $actions);
 
     return $card;
   }
+
+  // ----- Complete a task -----
+  $(document).on("click", ".complete-btn", function () {
+    const $card = $(this).closest(".task-card");
+    const itemId = $card.attr("data-item-id");
+
+    apiChangeStatus(
+      itemId,
+      "inactive",
+      function () {
+        loadActiveTasks();
+        loadCompletedTasks();
+      },
+      function (message) {
+        alert(message);
+      }
+    );
+  });
+
+  // ----- Restore a task -----
+  $(document).on("click", ".restore-btn", function () {
+    const $card = $(this).closest(".task-card");
+    const itemId = $card.attr("data-item-id");
+
+    apiChangeStatus(
+      itemId,
+      "active",
+      function () {
+        loadActiveTasks();
+        loadCompletedTasks();
+      },
+      function (message) {
+        alert(message);
+      }
+    );
+  });
 
 });

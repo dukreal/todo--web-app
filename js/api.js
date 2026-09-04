@@ -140,3 +140,33 @@ function apiEditItem(itemInfo, onSuccess, onError) {
     }
   });
 }
+
+/**
+ * Change a task's status (complete or restore).
+ * @param {string|number} itemId
+ * @param {string} status - "active" or "inactive"
+ * @param {function} onSuccess - callback(data)
+ * @param {function} onError - callback(message)
+ */
+function apiChangeStatus(itemId, status, onSuccess, onError) {
+  $.ajax({
+    url: API_URL + "/statusItem_action.php",
+    method: "PUT",
+    contentType: "text/plain",
+    data: JSON.stringify({
+      item_id: itemId,
+      status: status
+    }),
+    dataType: "json",
+    success: function (response) {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onError(response.message || "Unable to update task status.");
+      }
+    },
+    error: function () {
+      onError("Unable to reach the server. Please try again.");
+    }
+  });
+}
