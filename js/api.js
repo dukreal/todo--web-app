@@ -76,8 +76,16 @@ function apiGetItems(status, userId, onSuccess, onError) {
     dataType: "json",
     success: function (response) {
       if (response.status === 200) {
-        // API may return a single object or an array depending on result count.
-        const items = Array.isArray(response.data) ? response.data : (response.data ? [response.data] : []);
+        // API returns data as either:
+        // - an object keyed by index, e.g. {"0": {...}, "1": {...}}
+        // - a single task object
+        // - null/undefined when there are no tasks
+        let items = [];
+        if (Array.isArray(response.data)) {
+          items = response.data;
+        } else if (response.data && typeof response.data === "object") {
+          items = Object.values(response.data);
+        }
         onSuccess(items);
       } else {
         onError(response.message || "Unable to load tasks.");
