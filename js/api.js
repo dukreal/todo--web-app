@@ -42,7 +42,7 @@ function apiSignUp(userInfo, onSuccess, onError) {
   $.ajax({
     url: API_URL + "/signup_action.php",
     method: "POST",
-    contentType: "application/json",
+    contentType: "text/plain",
     data: JSON.stringify(userInfo),
     dataType: "json",
     success: function (response) {
