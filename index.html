@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do App</title>
+</head>
+<body>
+
+  <script>
+    // Check if a user is already logged in via localStorage.
+    const userId = localStorage.getItem("user_id");
+
+    if (userId) {
+      // User is logged in - go to dashboard
+      window.location.href = "pages/dashboard.html";
+    } else {
+      // No user logged in - go to sign in
+      window.location.href = "pages/signin.html";
+    }
+  </script>
+
+</body>
+</html>
