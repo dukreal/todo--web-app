@@ -88,3 +88,29 @@ function apiGetItems(status, userId, onSuccess, onError) {
     }
   });
 }
+
+/**
+ * Add a new task.
+ * @param {object} itemInfo - { item_name, item_description, user_id }
+ * @param {function} onSuccess - callback(data)
+ * @param {function} onError - callback(message)
+ */
+function apiAddItem(itemInfo, onSuccess, onError) {
+  $.ajax({
+    url: API_URL + "/addItem_action.php",
+    method: "POST",
+    contentType: "text/plain",
+    data: JSON.stringify(itemInfo),
+    dataType: "json",
+    success: function (response) {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onError(response.message || "Unable to add task.");
+      }
+    },
+    error: function () {
+      onError("Unable to reach the server. Please try again.");
+    }
+  });
+}

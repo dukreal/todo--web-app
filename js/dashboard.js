@@ -29,6 +29,50 @@ $(document).ready(function () {
   loadActiveTasks();
   loadCompletedTasks();
 
+  // ----- Add Task Modal -----
+  $("#add-task-btn").on("click", function () {
+    $("#modal-title").text("Add Task");
+    $("#task-item-id").val("");
+    $("#task-name").val("");
+    $("#task-description").val("");
+    $("#task-error").text("");
+    $("#task-save-btn").text("Add");
+    $("#task-modal").removeClass("hidden");
+  });
+
+  $("#task-cancel-btn").on("click", function () {
+    $("#task-modal").addClass("hidden");
+  });
+
+  $("#task-form").on("submit", function (e) {
+    e.preventDefault();
+
+    const itemId = $("#task-item-id").val();
+    const itemName = $("#task-name").val().trim();
+    const itemDescription = $("#task-description").val().trim();
+
+    $("#task-error").text("");
+
+    if (!itemId) {
+      // Adding a new task
+      apiAddItem(
+        {
+          item_name: itemName,
+          item_description: itemDescription,
+          user_id: userId
+        },
+        function () {
+          $("#task-modal").addClass("hidden");
+          loadActiveTasks();
+        },
+        function (message) {
+          $("#task-error").text(message);
+        }
+      );
+    }
+    // Editing an existing task will be handled here in the next step (Task 11).
+  });
+
   function loadActiveTasks() {
     apiGetItems(
       "active",
@@ -101,7 +145,7 @@ $(document).ready(function () {
     const $deleteBtn = $("<button class='delete-btn'>Delete</button>");
 
     // Edit / Complete-Restore / Delete handlers will be wired up in upcoming steps
-    // (Add Task modal, Edit Task, Complete/Restore, Delete).
+    // (Edit Task, Complete/Restore, Delete).
 
     $actions.append($editBtn, $statusBtn, $deleteBtn);
     $card.append($name, $desc, $actions);
