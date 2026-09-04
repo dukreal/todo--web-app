@@ -57,3 +57,34 @@ function apiSignUp(userInfo, onSuccess, onError) {
     }
   });
 }
+
+/**
+ * Get a user's tasks, filtered by status.
+ * @param {string} status - "active" or "inactive"
+ * @param {string|number} userId
+ * @param {function} onSuccess - callback(data) where data is an array of tasks
+ * @param {function} onError - callback(message)
+ */
+function apiGetItems(status, userId, onSuccess, onError) {
+  $.ajax({
+    url: API_URL + "/getItems_action.php",
+    method: "GET",
+    data: {
+      status: status,
+      user_id: userId
+    },
+    dataType: "json",
+    success: function (response) {
+      if (response.status === 200) {
+        // API may return a single object or an array depending on result count.
+        const items = Array.isArray(response.data) ? response.data : (response.data ? [response.data] : []);
+        onSuccess(items);
+      } else {
+        onError(response.message || "Unable to load tasks.");
+      }
+    },
+    error: function () {
+      onError("Unable to reach the server. Please try again.");
+    }
+  });
+}
