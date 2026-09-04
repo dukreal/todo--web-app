@@ -114,3 +114,29 @@ function apiAddItem(itemInfo, onSuccess, onError) {
     }
   });
 }
+
+/**
+ * Edit an existing task.
+ * @param {object} itemInfo - { item_id, item_name, item_description }
+ * @param {function} onSuccess - callback(data)
+ * @param {function} onError - callback(message)
+ */
+function apiEditItem(itemInfo, onSuccess, onError) {
+  $.ajax({
+    url: API_URL + "/editItem_action.php",
+    method: "PUT",
+    contentType: "text/plain",
+    data: JSON.stringify(itemInfo),
+    dataType: "json",
+    success: function (response) {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onError(response.message || "Unable to update task.");
+      }
+    },
+    error: function () {
+      onError("Unable to reach the server. Please try again.");
+    }
+  });
+}

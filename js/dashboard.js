@@ -29,7 +29,7 @@ $(document).ready(function () {
   loadActiveTasks();
   loadCompletedTasks();
 
-  // ----- Add Task Modal -----
+  // ----- Add / Edit Task Modal -----
   $("#add-task-btn").on("click", function () {
     $("#modal-title").text("Add Task");
     $("#task-item-id").val("");
@@ -42,6 +42,22 @@ $(document).ready(function () {
 
   $("#task-cancel-btn").on("click", function () {
     $("#task-modal").addClass("hidden");
+  });
+
+  // Edit button click is delegated since task cards are rendered dynamically.
+  $(document).on("click", ".edit-btn", function () {
+    const $card = $(this).closest(".task-card");
+    const itemId = $card.attr("data-item-id");
+    const itemName = $card.find(".task-name").text();
+    const itemDescription = $card.find(".task-description").text();
+
+    $("#modal-title").text("Edit Task");
+    $("#task-item-id").val(itemId);
+    $("#task-name").val(itemName);
+    $("#task-description").val(itemDescription);
+    $("#task-error").text("");
+    $("#task-save-btn").text("Save");
+    $("#task-modal").removeClass("hidden");
   });
 
   $("#task-form").on("submit", function (e) {
@@ -69,8 +85,24 @@ $(document).ready(function () {
           $("#task-error").text(message);
         }
       );
+    } else {
+      // Editing an existing task
+      apiEditItem(
+        {
+          item_id: itemId,
+          item_name: itemName,
+          item_description: itemDescription
+        },
+        function () {
+          $("#task-modal").addClass("hidden");
+          loadActiveTasks();
+          loadCompletedTasks();
+        },
+        function (message) {
+          $("#task-error").text(message);
+        }
+      );
     }
-    // Editing an existing task will be handled here in the next step (Task 11).
   });
 
   function loadActiveTasks() {
@@ -144,8 +176,7 @@ $(document).ready(function () {
       : $("<button class='complete-btn'>Complete</button>");
     const $deleteBtn = $("<button class='delete-btn'>Delete</button>");
 
-    // Edit / Complete-Restore / Delete handlers will be wired up in upcoming steps
-    // (Edit Task, Complete/Restore, Delete).
+    // Complete/Restore and Delete handlers will be wired up in upcoming steps.
 
     $actions.append($editBtn, $statusBtn, $deleteBtn);
     $card.append($name, $desc, $actions);
