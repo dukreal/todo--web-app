@@ -132,7 +132,7 @@ function apiAddItem(itemInfo, onSuccess, onError) {
 function apiEditItem(itemInfo, onSuccess, onError) {
   $.ajax({
     url: API_URL + "/editItem_action.php",
-    method: "PUT",
+    method: "POST",
     contentType: "text/plain",
     data: JSON.stringify(itemInfo),
     dataType: "json",
@@ -159,7 +159,7 @@ function apiEditItem(itemInfo, onSuccess, onError) {
 function apiChangeStatus(itemId, status, onSuccess, onError) {
   $.ajax({
     url: API_URL + "/statusItem_action.php",
-    method: "PUT",
+    method: "POST",
     contentType: "text/plain",
     data: JSON.stringify({
       item_id: itemId,
