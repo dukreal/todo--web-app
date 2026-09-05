@@ -2,7 +2,6 @@
 // Handles: get tasks, display tasks, add/edit/complete/restore task, delete task (coming soon), logout.
 
 $(document).ready(function () {
-
   const userId = localStorage.getItem("user_id");
 
   // If no user is logged in, kick back to sign in.
@@ -75,7 +74,7 @@ $(document).ready(function () {
         {
           item_name: itemName,
           item_description: itemDescription,
-          user_id: userId
+          user_id: userId,
         },
         function () {
           $("#task-modal").addClass("hidden");
@@ -83,7 +82,7 @@ $(document).ready(function () {
         },
         function (message) {
           $("#task-error").text(message);
-        }
+        },
       );
     } else {
       // Editing an existing task
@@ -91,7 +90,7 @@ $(document).ready(function () {
         {
           item_id: itemId,
           item_name: itemName,
-          item_description: itemDescription
+          item_description: itemDescription,
         },
         function () {
           $("#task-modal").addClass("hidden");
@@ -100,7 +99,7 @@ $(document).ready(function () {
         },
         function (message) {
           $("#task-error").text(message);
-        }
+        },
       );
     }
   });
@@ -114,7 +113,7 @@ $(document).ready(function () {
       },
       function (message) {
         console.error("Failed to load active tasks:", message);
-      }
+      },
     );
   }
 
@@ -127,7 +126,7 @@ $(document).ready(function () {
       },
       function (message) {
         console.error("Failed to load completed tasks:", message);
-      }
+      },
     );
   }
 
@@ -142,9 +141,11 @@ $(document).ready(function () {
     $container.empty();
 
     if (!tasks || tasks.length === 0) {
-      $container.append($("<p class='empty-message'></p>").text(
-        isCompleted ? "No completed tasks." : "No active tasks."
-      ));
+      $container.append(
+        $("<p class='empty-message'></p>").text(
+          isCompleted ? "No completed tasks." : "No active tasks.",
+        ),
+      );
       return;
     }
 
@@ -159,10 +160,15 @@ $(document).ready(function () {
    * @param {boolean} isCompleted
    */
   function buildTaskCard(task, isCompleted) {
-    const $card = $("<div class='task-card'></div>").attr("data-item-id", task.item_id);
+    const $card = $("<div class='task-card'></div>").attr(
+      "data-item-id",
+      task.item_id,
+    );
 
     const $name = $("<h3 class='task-name'></h3>").text(task.item_name);
-    const $desc = $("<p class='task-description'></p>").text(task.item_description);
+    const $desc = $("<p class='task-description'></p>").text(
+      task.item_description,
+    );
 
     if (isCompleted) {
       $card.addClass("completed");
@@ -198,7 +204,7 @@ $(document).ready(function () {
       },
       function (message) {
         alert(message);
-      }
+      },
     );
   });
 
@@ -216,8 +222,29 @@ $(document).ready(function () {
       },
       function (message) {
         alert(message);
-      }
+      },
     );
   });
 
+  // ----- Delete a task -----
+  $(document).on("click", ".delete-btn", function () {
+    const $card = $(this).closest(".task-card");
+    const itemId = $card.attr("data-item-id");
+
+    const confirmed = confirm("Are you sure you want to delete this task?");
+    if (!confirmed) {
+      return;
+    }
+
+    apiDeleteItem(
+      itemId,
+      function () {
+        loadActiveTasks();
+        loadCompletedTasks();
+      },
+      function (message) {
+        alert(message);
+      },
+    );
+  });
 });

@@ -178,3 +178,31 @@ function apiChangeStatus(itemId, status, onSuccess, onError) {
     }
   });
 }
+
+/**
+ * Delete a task.
+ * @param {string|number} itemId
+ * @param {function} onSuccess - callback(data)
+ * @param {function} onError - callback(message)
+ */
+function apiDeleteItem(itemId, onSuccess, onError) {
+  $.ajax({
+    url: API_URL + "/deleteItem_action.php",
+    method: "POST",
+    contentType: "text/plain",
+    data: JSON.stringify({
+      item_id: itemId
+    }),
+    dataType: "json",
+    success: function (response) {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onError(response.message || "Unable to delete task.");
+      }
+    },
+    error: function () {
+      onError("Unable to reach the server. Please try again.");
+    }
+  });
+}
