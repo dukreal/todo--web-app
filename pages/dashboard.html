@@ -9,22 +9,40 @@
 <body>
 
   <header class="dashboard-header">
-    <div id="user-info"></div>
-    <button id="logout-btn">Logout</button>
+    <div class="header-left">
+      <span class="brand-mark" aria-hidden="true">&#10003;</span>
+      <div class="header-titles">
+        <span class="brand-name">Tasks</span>
+        <span id="user-info"></span>
+      </div>
+    </div>
+    <button id="logout-btn" class="btn btn-ghost">Log out</button>
   </header>
 
   <main class="dashboard-main">
 
-    <button id="add-task-btn">Add Task</button>
+    <div class="page-title-row">
+      <div>
+        <h1>Your tasks</h1>
+        <p id="tasks-summary">0 active &middot; 0 completed</p>
+      </div>
+      <button id="add-task-btn" class="btn btn-primary">+ Add task</button>
+    </div>
 
     <section id="active-tasks-section">
-      <h2>Active Tasks</h2>
-      <div id="active-tasks-list"></div>
+      <div class="section-label">
+        <span>Active</span>
+        <span id="active-count" class="count-badge">0</span>
+      </div>
+      <div id="active-tasks-list" class="task-list-box"></div>
     </section>
 
     <section id="completed-tasks-section">
-      <h2>Completed Tasks</h2>
-      <div id="completed-tasks-list"></div>
+      <div class="section-label">
+        <span>Completed</span>
+        <span id="completed-count" class="count-badge">0</span>
+      </div>
+      <div id="completed-tasks-list" class="task-list-box"></div>
     </section>
 
   </main>
@@ -37,20 +55,22 @@
       <form id="task-form">
         <input type="hidden" id="task-item-id">
 
-        <div class="form-group">
-          <label for="task-name">Task Name</label>
-          <input type="text" id="task-name" name="item_name" required>
+        <div class="field">
+          <label class="field-label" for="task-name">Task Name</label>
+          <input class="input" type="text" id="task-name" name="item_name" required>
         </div>
 
-        <div class="form-group">
-          <label for="task-description">Task Description</label>
-          <textarea id="task-description" name="item_description" required></textarea>
+        <div class="field">
+          <label class="field-label" for="task-description">Task Description</label>
+          <textarea class="input" id="task-description" name="item_description" required></textarea>
         </div>
 
         <div id="task-error" class="error-message"></div>
 
-        <button type="submit" id="task-save-btn">Add</button>
-        <button type="button" id="task-cancel-btn">Cancel</button>
+        <div class="modal-actions">
+          <button type="button" id="task-cancel-btn" class="btn btn-ghost">Cancel</button>
+          <button type="submit" id="task-save-btn" class="btn btn-primary">Add</button>
+        </div>
       </form>
     </div>
   </div>
