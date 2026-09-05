@@ -157,7 +157,6 @@ body {
   background: var(--surface);
   border: 1px dashed var(--border);
   border-radius: 16px;
-  min-height: 120px;
 }
 
 .task-list-box:has(.task-card) {
