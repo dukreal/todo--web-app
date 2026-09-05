@@ -194,6 +194,7 @@ $(document).ready(function () {
 
     const $name = $("<h3 class='task-name'></h3>").text(task.item_name);
     const $desc = $("<p class='task-description'></p>").text(task.item_description);
+    const $info = $("<div class='task-info'></div>").append($name, $desc);
 
     if (isCompleted) {
       $card.addClass("completed");
@@ -208,7 +209,7 @@ $(document).ready(function () {
     const $deleteBtn = $("<button class='delete-btn'>Delete</button>");
 
     $actions.append($editBtn, $statusBtn, $deleteBtn);
-    $card.append($name, $desc, $actions);
+    $card.append($info, $actions);
 
     return $card;
   }
