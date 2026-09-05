@@ -89,13 +89,21 @@ body {
 
 .btn-ghost {
   background: transparent;
-  border: 1px solid var(--border);
+  border: none;
   color: var(--ink-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .btn-ghost:hover {
-  border-color: var(--ink-muted);
   color: var(--ink);
+}
+
+.btn-ghost svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
 }
 
 .dashboard-main {
@@ -147,9 +155,13 @@ body {
 
 .task-list-box {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  min-height: 96px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  min-height: 120px;
+}
+
+.task-list-box:has(.task-card) {
+  border-style: solid;
 }
 
 .empty-state {
@@ -159,13 +171,14 @@ body {
   justify-content: center;
   gap: 10px;
   padding: 40px 20px;
-  color: var(--ink-muted);
+  color: var(--ink-2);
   font-size: 14px;
 }
 
-.empty-state-icon {
-  font-size: 22px;
-  opacity: 0.6;
+.empty-state-icon svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--ink-muted);
 }
 
 .task-card {

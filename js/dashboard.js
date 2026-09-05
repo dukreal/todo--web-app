@@ -1,5 +1,5 @@
 // js/dashboard.js
-// Handles: get tasks, display tasks, add/edit/complete/restore task, delete task (coming soon), logout.
+// Handles: get tasks, display tasks, add/edit/complete/restore task, delete task, logout.
 
 $(document).ready(function () {
 
@@ -160,8 +160,14 @@ $(document).ready(function () {
     updateTaskCounts();
 
     if (!tasks || tasks.length === 0) {
+      const inboxIcon =
+        "<svg viewBox='0 0 24 24' fill='none' stroke-width='1.5' " +
+        "stroke-linecap='round' stroke-linejoin='round'>" +
+        "<path d='M22 12h-6l-2 3h-4l-2-3H2'/>" +
+        "<path d='M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z'/>" +
+        "</svg>";
       const $empty = $("<div class='empty-state'></div>");
-      $empty.append($("<div class='empty-state-icon'>&#128229;</div>"));
+      $empty.append($("<div class='empty-state-icon'></div>").html(inboxIcon));
       $empty.append(
         $("<div></div>").text(
           isCompleted
@@ -201,8 +207,6 @@ $(document).ready(function () {
       : $("<button class='complete-btn'>Complete</button>");
     const $deleteBtn = $("<button class='delete-btn'>Delete</button>");
 
-    // Delete handler will be wired up in an upcoming step.
-
     $actions.append($editBtn, $statusBtn, $deleteBtn);
     $card.append($name, $desc, $actions);
 
@@ -235,6 +239,28 @@ $(document).ready(function () {
     apiChangeStatus(
       itemId,
       "active",
+      function () {
+        loadActiveTasks();
+        loadCompletedTasks();
+      },
+      function (message) {
+        alert(message);
+      }
+    );
+  });
+
+  // ----- Delete a task -----
+  $(document).on("click", ".delete-btn", function () {
+    const $card = $(this).closest(".task-card");
+    const itemId = $card.attr("data-item-id");
+
+    const confirmed = confirm("Are you sure you want to delete this task?");
+    if (!confirmed) {
+      return;
+    }
+
+    apiDeleteItem(
+      itemId,
       function () {
         loadActiveTasks();
         loadCompletedTasks();
