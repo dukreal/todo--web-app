@@ -187,12 +187,8 @@ function apiChangeStatus(itemId, status, onSuccess, onError) {
  */
 function apiDeleteItem(itemId, onSuccess, onError) {
   $.ajax({
-    url: API_URL + "/deleteItem_action.php",
+    url: API_URL + "/deleteItem_action.php?item_id=" + encodeURIComponent(itemId),
     method: "POST",
-    contentType: "text/plain",
-    data: JSON.stringify({
-      item_id: itemId
-    }),
     dataType: "json",
     success: function (response) {
       if (response.status === 200) {
