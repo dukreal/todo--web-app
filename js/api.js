@@ -132,7 +132,7 @@ function apiAddItem(itemInfo, onSuccess, onError) {
 function apiEditItem(itemInfo, onSuccess, onError) {
   $.ajax({
     url: API_URL + "/editItem_action.php",
-    method: "POST",
+    method: "PUT",
     contentType: "text/plain",
     data: JSON.stringify(itemInfo),
     dataType: "json",
@@ -159,7 +159,7 @@ function apiEditItem(itemInfo, onSuccess, onError) {
 function apiChangeStatus(itemId, status, onSuccess, onError) {
   $.ajax({
     url: API_URL + "/statusItem_action.php",
-    method: "POST",
+    method: "PUT",
     contentType: "text/plain",
     data: JSON.stringify({
       item_id: itemId,
@@ -188,7 +188,7 @@ function apiChangeStatus(itemId, status, onSuccess, onError) {
 function apiDeleteItem(itemId, onSuccess, onError) {
   $.ajax({
     url: API_URL + "/deleteItem_action.php?item_id=" + encodeURIComponent(itemId),
-    method: "POST",
+    method: "DELETE",
     dataType: "json",
     success: function (response) {
       if (response.status === 200) {
